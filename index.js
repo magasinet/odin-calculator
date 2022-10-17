@@ -33,7 +33,7 @@ let number1 = '';
 let number2 = '';
 let clickedOperator = '';
 let result = '';
-
+let storedOperator = '';
 
 for (let btn of buttons) {
     btn.addEventListener('click', function() {
@@ -44,27 +44,59 @@ for (let btn of buttons) {
         if(this.classList.contains('number')) {
             inputNumber += val;
         } else if (this.classList.contains('operator')) {
-            clickedOperator += val;
+            
+            if(number1 === '') {
+              number1 = inputNumber;
+              inputNumber = '';  
+            } else if(number1) {
+                number2 = inputNumber;
+                inputNumber = '';
+            } 
+            
+            if(clickedOperator === '') {
+                clickedOperator = val;
+            } else if(clickedOperator) {
+                storedOperator = clickedOperator;
+                clickedOperator = val;
+            }
+            
+            
         }
+
+        while(number1 && number2 && storedOperator) {
+            let a = Number(number1);
+            let b = Number(number2);
+
+            var operateFunctions = {
+                '+': function(a, b) { return a + b },
+                '-': function(a, b) { return a - b },
+                 // ...
+                 //
+                 //
+            };
+
+           
+
+            
+
+            result += operateFunctions[storedOperator](a, b);
+            display.textContent = '';
+            display.textContent = result;
+            display.textContent += clickedOperator;
+            number1 = result;
+            result = '';
+            number2 = '';
+            storedOperator = '';
+            
+            break;
+        }  
+
+        console.log(number1, clickedOperator, number2); 
+
     }
     )};
 
-        /* 
-        HOW TO GET NUMBER
-            IF CLASS CONTAINS 'number'
-            STORE VALUE UNTIL NO LONGER NUMBER
-
-        function add(a,b) {
-            return a + b;
-        }
-        
-
-        function operate(number1, operator, number2)
-            add() or substract() depending on which operator
-        
-        */
-
-        
+     
         
 /* 
     if(this.classList.contains('number')) {
